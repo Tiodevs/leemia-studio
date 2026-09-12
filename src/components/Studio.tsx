@@ -83,7 +83,7 @@ export function Studio() {
             {STATS.map((stat) => (
               <div
                 key={stat.label}
-                className="border-t border-ink-line py-6 pr-4 even:pl-5 max-md:odd:border-r md:even:pl-0 md:border-r md:pr-6 md:last:border-r-0"
+                className="border-t border-ink-line py-6 pr-4 even:pl-5 max-md:odd:border-r md:even:pl-0 md:pr-8"
               >
                 <p className="display text-[clamp(1.65rem,6.4vw,2.75rem)] text-cyan">
                   {stat.value}

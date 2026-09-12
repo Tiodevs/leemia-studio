@@ -1,5 +1,5 @@
 export const NAV_LINKS = [
-  { label: "Estúdio", href: "#estudio" },
+  { label: "Sobre", href: "#estudio" },
   { label: "Serviços", href: "#servicos" },
   { label: "Projetos", href: "#projetos" },
   { label: "Processo", href: "#processo" },
@@ -7,9 +7,9 @@ export const NAV_LINKS = [
 ] as const;
 
 export const CONTACT = {
-  email: "contato@leemia.com.br",
-  phoneLabel: "+55 (11) 90000-0000",
-  whatsappUrl: "https://wa.me/5511900000000",
+  email: "santospefelipe@gmail.com",
+  phoneLabel: "+55 (41) 98420-8843",
+  whatsappUrl: "https://wa.me/5541984208843",
   location: "Curitiba, Brasil",
 } as const;
 

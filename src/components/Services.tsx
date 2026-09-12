@@ -68,7 +68,7 @@ export function Services() {
           as="h2"
           className="display display-lines text-[clamp(2rem,5.4vw,4.5rem)] md:col-span-8"
         >
-          Diga o gargalo. A gente escolhe a ferramenta.
+          4 serviços para atender a dor da sua empresa
         </RevealText>
       </div>
 
