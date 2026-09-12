@@ -8,54 +8,27 @@ import {
   type FormEvent,
   type KeyboardEvent,
 } from "react";
+import { submitBriefing } from "@/app/actions/briefing";
 import { EASE, gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useSite } from "@/components/SiteProvider";
 import { SERVICES } from "@/data/services";
+import {
+  BRIEF_STEPS,
+  BUDGET_OPTIONS,
+  EMPTY_BRIEF_FORM,
+  EXTRA_SERVICE_OPTIONS,
+  START_OPTIONS,
+  TEAM_OPTIONS,
+  USER_OPTIONS,
+  type BriefForm,
+} from "@/data/brief";
 import { CONTACT } from "@/data/site";
 
-const STEPS = ["Projeto", "Empresa", "Contato"] as const;
-
+const STEPS = BRIEF_STEPS;
 const SERVICE_OPTIONS = [
   ...SERVICES.map((service) => service.title),
-  "Ainda não sei",
+  ...EXTRA_SERVICE_OPTIONS,
 ];
-const START_OPTIONS = [
-  "Imediato",
-  "Próximas semanas",
-  "Próximo trimestre",
-  "Só pesquisando",
-];
-const TEAM_OPTIONS = ["1 a 5", "6 a 20", "21 a 100", "101 a 500", "500+"];
-const USER_OPTIONS = [
-  "Até 10",
-  "10 a 50",
-  "50 a 200",
-  "200 a 1.000",
-  "Mais de 1.000",
-  "Ainda não sei",
-];
-const BUDGET_OPTIONS = [
-  "Até R$ 5 mil",
-  "R$ 5 a 15 mil",
-  "R$ 15 a 40 mil",
-  "Acima de R$ 40 mil",
-  "A definir",
-];
-
-const EMPTY_FORM = {
-  services: [] as string[],
-  start: "",
-  company: "",
-  team: "",
-  users: "",
-  budget: "",
-  name: "",
-  email: "",
-  phone: "",
-  message: "",
-};
-
-type BriefForm = typeof EMPTY_FORM;
 
 export function ProjectBrief() {
   const root = useRef<HTMLDivElement>(null);
@@ -70,7 +43,9 @@ export function ProjectBrief() {
   const { briefOpen, closeBrief } = useSite();
   const [step, setStep] = useState(0);
   const [sent, setSent] = useState(false);
-  const [form, setForm] = useState<BriefForm>(EMPTY_FORM);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState<BriefForm>(EMPTY_BRIEF_FORM);
 
   const isLast = step === STEPS.length - 1;
 
@@ -95,15 +70,31 @@ export function ProjectBrief() {
     body.current?.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  // Submission is not wired to a backend yet: the success panel is the visual
-  // end of the flow until the persistence layer lands.
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!isLast) {
       goToStep(step + 1);
       return;
     }
+    void sendBrief();
+  };
+
+  const sendBrief = async () => {
+    if (sending) return;
+
+    setSending(true);
+    setError("");
+
+    const result = await submitBriefing(form);
+
+    if (!result.ok) {
+      setSending(false);
+      setError(result.error);
+      return;
+    }
+
     lastHeight.current = panel.current?.offsetHeight ?? 0;
+    setSending(false);
     setSent(true);
   };
 
@@ -206,9 +197,11 @@ export function ProjectBrief() {
             gsap.set(root.current, { pointerEvents: "none" });
             trigger.current?.focus({ preventScroll: true });
             setStep(0);
+            setSending(false);
+            setError("");
             if (sent) {
               setSent(false);
-              setForm(EMPTY_FORM);
+              setForm(EMPTY_BRIEF_FORM);
             }
           },
         })
@@ -228,11 +221,13 @@ export function ProjectBrief() {
 
   useGSAP(
     () => {
-      gsap.to("[data-brief-bar]", {
-        scaleX: (step + 1) / STEPS.length,
-        duration: prefersReducedMotion() ? 0 : 0.7,
-        ease: EASE.quart,
-      });
+      if (!sent) {
+        gsap.to("[data-brief-bar]", {
+          scaleX: (step + 1) / STEPS.length,
+          duration: prefersReducedMotion() ? 0 : 0.7,
+          ease: EASE.quart,
+        });
+      }
 
       if (!briefOpen || prefersReducedMotion()) return;
 
@@ -400,7 +395,7 @@ export function ProjectBrief() {
                         onSelect={(option) => set("start", option)}
                       />
                       <TextField
-                        label="Em duas linhas, o que precisa existir"
+                        label="Descreva o que você precisa."
                         placeholder="Ex.: um portal para clientes acompanharem pedidos"
                         value={form.message}
                         onChange={(value) => set("message", value)}
@@ -447,6 +442,7 @@ export function ProjectBrief() {
                         value={form.name}
                         onChange={(value) => set("name", value)}
                         autoComplete="name"
+                        required
                       />
                       <TextField
                         label="E-mail"
@@ -455,6 +451,7 @@ export function ProjectBrief() {
                         value={form.email}
                         onChange={(value) => set("email", value)}
                         autoComplete="email"
+                        required
                       />
                       <TextField
                         label="WhatsApp"
@@ -476,34 +473,42 @@ export function ProjectBrief() {
                     </>
                   )}
                 </div>
-
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none sticky bottom-0 -mt-8 block h-8 bg-gradient-to-t from-ink-soft to-transparent"
-                />
               </div>
 
               <div
                 data-brief-anim
-                className="flex items-center justify-between gap-4 border-t border-ink-line px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:px-8 md:py-5"
+                className="flex flex-col gap-3 border-t border-ink-line px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:px-8 md:py-5"
               >
-                <button
-                  type="button"
-                  onClick={() => (step === 0 ? closeBrief() : goToStep(step - 1))}
-                  className="text-xs tracking-[0.16em] text-bone-dim uppercase transition-colors hover:text-bone"
-                >
-                  {step === 0 ? "Cancelar" : "Voltar"}
-                </button>
+                {error ? (
+                  <p role="alert" className="text-xs text-cyan">
+                    {error}
+                  </p>
+                ) : null}
+                <div className="flex items-center justify-between gap-4">
+                  <button
+                    type="button"
+                    onClick={() => (step === 0 ? closeBrief() : goToStep(step - 1))}
+                    className="text-xs tracking-[0.16em] text-bone-dim uppercase transition-colors hover:text-bone"
+                  >
+                    {step === 0 ? "Cancelar" : "Voltar"}
+                  </button>
 
-                <button
-                  type="submit"
-                  className="group relative inline-flex overflow-hidden rounded-full bg-cyan px-6 py-3 text-xs font-medium tracking-[0.14em] text-ink uppercase"
-                >
-                  <span className="relative z-10">
-                    {isLast ? "Enviar briefing" : "Avançar"}
-                  </span>
-                  <span className="absolute inset-0 origin-bottom scale-y-0 bg-bone transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-y-100" />
-                </button>
+                  <button
+                    type="submit"
+                    disabled={sending}
+                    aria-busy={sending}
+                    className="group relative inline-flex overflow-hidden rounded-full bg-cyan px-6 py-3 text-xs font-medium tracking-[0.14em] text-ink uppercase disabled:cursor-wait disabled:opacity-70"
+                  >
+                    <span className="relative z-10">
+                      {sending
+                        ? "Enviando..."
+                        : isLast
+                          ? "Enviar briefing"
+                          : "Avançar"}
+                    </span>
+                    <span className="absolute inset-0 origin-bottom scale-y-0 bg-bone transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-y-100" />
+                  </button>
+                </div>
               </div>
             </form>
           )}
@@ -560,6 +565,7 @@ type TextFieldProps = {
   inputMode?: "text" | "tel" | "email";
   autoComplete?: string;
   multiline?: boolean;
+  required?: boolean;
 };
 
 function TextField({
@@ -571,6 +577,7 @@ function TextField({
   inputMode,
   autoComplete,
   multiline,
+  required,
 }: TextFieldProps) {
   const className =
     "mt-3 w-full border-b border-ink-line bg-transparent pb-3 text-base text-bone transition-colors placeholder:text-bone-dim/50 focus:border-cyan";
@@ -580,11 +587,12 @@ function TextField({
       <span className="eyebrow">{label}</span>
       {multiline ? (
         <textarea
-          rows={3}
+          rows={4}
           value={value}
           placeholder={placeholder}
+          required={required}
           onChange={(event) => onChange(event.target.value)}
-          className={`${className} resize-none`}
+          className="mt-3 w-full resize-none rounded-sm border border-ink-line bg-transparent px-3 py-3 text-base text-bone outline-none transition-colors placeholder:text-bone-dim/50 focus:border-cyan"
         />
       ) : (
         <input
@@ -593,6 +601,7 @@ function TextField({
           inputMode={inputMode}
           autoComplete={autoComplete}
           placeholder={placeholder}
+          required={required}
           onChange={(event) => onChange(event.target.value)}
           className={className}
         />
