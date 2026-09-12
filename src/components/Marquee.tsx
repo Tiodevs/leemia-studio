@@ -4,10 +4,10 @@ import { useRef } from "react";
 import { ScrollTrigger, gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 const ITEMS = [
+  "Sistemas Web",
+  "IA aplicada",
   "Landing Pages",
   "Sites Institucionais",
-  "Sistemas Web",
-  "AI Workflows",
   "Automação",
   "Design de Interface",
 ];

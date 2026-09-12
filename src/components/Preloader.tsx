@@ -5,11 +5,12 @@ import { EASE, gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { LogoMark } from "@/components/LogoMark";
 import { useSite } from "@/components/SiteProvider";
 
-const WORDS = ["Design", "Code", "AI Workflows"];
+const WORDS = ["Design", "Code", "IA aplicada"];
 
 export function Preloader() {
   const root = useRef<HTMLDivElement>(null);
   const counter = useRef<HTMLSpanElement>(null);
+  const bar = useRef<HTMLSpanElement>(null);
   const [gone, setGone] = useState(false);
   const { finishIntro } = useSite();
 
@@ -21,23 +22,28 @@ export function Preloader() {
         return;
       }
 
-      // Written only when the intro actually finishes, so a double mount in
-      // development (or an early reload) still shows the full sequence once.
-      const seen = sessionStorage.getItem("leemia:intro") === "1";
-
       const meshLines = root.current?.querySelectorAll("[data-mesh-line]") ?? [];
       const frame = root.current?.querySelector("[data-mesh-frame]");
 
+      const setProgress = (progress: number) => {
+        const value = Math.min(100, Math.round(progress * 100));
+        if (counter.current) {
+          counter.current.textContent = String(value).padStart(3, "0");
+        }
+        if (bar.current) {
+          gsap.set(bar.current, { scaleX: progress });
+        }
+      };
+
       const tl = gsap.timeline({
         paused: true,
+        onUpdate: () => setProgress(tl.progress()),
         onComplete: () => {
-          sessionStorage.setItem("leemia:intro", "1");
+          setProgress(1);
           setGone(true);
         },
       });
 
-      // Start only once fonts are ready: playing through the first paint would
-      // let a long frame skip most of the timeline.
       const armPlayback = () => {
         if (document.fonts && document.fonts.status !== "loaded") {
           document.fonts.ready.then(() => tl.play());
@@ -46,22 +52,11 @@ export function Preloader() {
         }
       };
 
-      if (seen) {
-        tl.to(root.current, {
-          autoAlpha: 0,
-          duration: 0.5,
-          ease: "power2.out",
-          onStart: finishIntro,
-        });
-        armPlayback();
-        return;
-      }
-
       tl.set(root.current, { autoAlpha: 1 })
         .from("[data-intro-frame]", {
-          scale: 0.7,
+          scale: 0.72,
           autoAlpha: 0,
-          duration: 0.7,
+          duration: 0.55,
           ease: EASE.expo,
         })
         .fromTo(
@@ -69,64 +64,43 @@ export function Preloader() {
           { drawSVG: "50% 50%" },
           {
             drawSVG: "0% 100%",
-            duration: 1.05,
-            stagger: 0.09,
+            duration: 1.15,
+            stagger: 0.08,
             ease: "power2.inOut",
           },
-          0.15,
+          0.08,
         )
         .from(
           "[data-intro-word]",
           {
             yPercent: 120,
-            duration: 0.7,
-            stagger: 0.07,
+            duration: 0.55,
+            stagger: 0.06,
             ease: EASE.expo,
           },
-          0.45,
+          0.32,
         )
-        .to(
-          { v: 0 },
-          {
-            v: 100,
-            duration: 1.35,
-            ease: "power1.inOut",
-            onUpdate() {
-              const value = Math.round(
-                (this.targets()[0] as { v: number }).v,
-              );
-              if (counter.current) {
-                counter.current.textContent = String(value).padStart(3, "0");
-              }
-            },
-          },
-          0.15,
-        )
-        .to("[data-intro-bar]", { scaleX: 1, duration: 1.35, ease: "power1.inOut" }, 0.15)
-        // Curtain lifts as vertical slats, revealing the hero underneath.
         .to(
           ["[data-intro-word]", "[data-intro-meta]"],
-          { autoAlpha: 0, duration: 0.35, ease: "power2.out" },
-          "+=0.15",
+          { autoAlpha: 0, duration: 0.3, ease: "power2.out" },
+          1.7,
         )
         .to(
           "[data-intro-frame]",
-          { scale: 1.35, autoAlpha: 0, duration: 0.8, ease: EASE.expo },
-          "<",
+          { scale: 1.28, autoAlpha: 0, duration: 0.7, ease: EASE.expo },
+          1.7,
         )
         .to(
           "[data-intro-slat]",
           {
             scaleY: 0,
             transformOrigin: "top center",
-            duration: 0.9,
-            stagger: { each: 0.06, from: "start" },
+            duration: 0.85,
+            stagger: { each: 0.05, from: "start" },
             ease: EASE.quart,
-            // Hand over as the curtain starts lifting, so the hero animates in
-            // behind the slats instead of after them.
             onStart: finishIntro,
           },
-          "<0.15",
+          1.85,
         );
 
       armPlayback();
@@ -177,23 +151,23 @@ export function Preloader() {
 
       <div
         data-intro-meta
-        className="absolute inset-x-0 bottom-0 flex items-end justify-between px-[var(--gutter)] pb-8"
+        className="absolute inset-x-0 bottom-0 px-[var(--gutter)] pb-8"
       >
-        <span className="eyebrow">Leemia Studio</span>
-        <div className="flex flex-1 items-center gap-4 px-6 md:px-10">
-          <span className="relative h-px flex-1 bg-ink-line">
-            <span
-              data-intro-bar
-              className="absolute inset-0 origin-left scale-x-0 bg-cyan"
-            />
+        <div className="flex items-end justify-between gap-6">
+          <span className="eyebrow">Leemia</span>
+          <span
+            ref={counter}
+            className="font-mono text-sm tracking-[0.22em] text-bone tabular-nums md:text-base"
+          >
+            000
           </span>
         </div>
-        <span
-          ref={counter}
-          className="font-mono text-xs tracking-[0.2em] text-bone tabular-nums"
-        >
-          000
-        </span>
+        <div className="relative mt-4 h-[3px] w-full overflow-hidden bg-ink-line">
+          <span
+            ref={bar}
+            className="absolute inset-0 origin-left scale-x-0 bg-cyan"
+          />
+        </div>
       </div>
     </div>
   );

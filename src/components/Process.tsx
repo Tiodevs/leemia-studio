@@ -57,7 +57,7 @@ export function Process() {
     >
       <div className="shell">
         <div className="grid gap-6 md:grid-cols-12 md:items-end">
-          <p className="eyebrow md:col-span-4">04 — Processo</p>
+          <p className="eyebrow md:col-span-4">Processo</p>
           <RevealText
             as="h2"
             className="display display-lines text-[clamp(2rem,5.4vw,4.5rem)] md:col-span-8"
@@ -88,16 +88,13 @@ export function Process() {
                 />
 
                 <div className="md:col-span-4 md:pr-12">
-                  <p className="font-mono text-[0.65rem] tracking-[0.2em] text-cyan">
-                    {step.index} · {step.duration}
-                  </p>
-                </div>
-
-                <div className="md:col-span-7 md:col-start-6">
                   <h3 className="display text-[clamp(1.5rem,3.2vw,2.5rem)]">
                     {step.title}
                   </h3>
-                  <p className="mt-4 max-w-prose text-base leading-relaxed text-bone-dim">
+                </div>
+
+                <div className="md:col-span-7 md:col-start-6">
+                  <p className="max-w-prose text-base leading-relaxed text-bone-dim">
                     {step.description}
                   </p>
                 </div>

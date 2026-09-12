@@ -63,12 +63,12 @@ export function Services() {
       className="shell relative scroll-mt-24 py-24 md:py-36"
     >
       <div className="grid gap-6 md:grid-cols-12 md:items-end">
-        <p className="eyebrow md:col-span-4">02 — Serviços</p>
+        <p className="eyebrow md:col-span-4">Serviços</p>
         <RevealText
           as="h2"
           className="display display-lines text-[clamp(2rem,5.4vw,4.5rem)] md:col-span-8"
         >
-          Quatro frentes, uma entrega só.
+          Diga o gargalo. A gente escolhe a ferramenta.
         </RevealText>
       </div>
 

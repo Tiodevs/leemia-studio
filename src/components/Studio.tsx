@@ -47,10 +47,10 @@ export function Studio() {
     >
       <div className="grid gap-14 md:grid-cols-12">
         <div className="md:col-span-4">
-          <p className="eyebrow">01 — O estúdio</p>
+          <p className="eyebrow">A nossa empresa</p>
           <div
             data-studio-mark
-            className="mt-10 hidden w-40 text-cyan/70 md:block"
+            className="mt-10 hidden w-40 text-cyan md:block"
           >
             <LogoMark animated className="h-auto w-full" />
           </div>
@@ -61,7 +61,7 @@ export function Studio() {
             as="h2"
             className="display display-lines text-[clamp(1.9rem,4.6vw,4rem)] text-balance"
           >
-            Uma empresa de tecnologia enxuta, com padrão de agência grande.
+            Uma software house que constrói produto de ponta a ponta.
           </RevealText>
 
           <div className="mt-10 grid gap-8 text-base leading-relaxed text-bone-dim md:grid-cols-2 md:text-[1.0625rem]">
@@ -79,7 +79,7 @@ export function Studio() {
             </RevealText>
           </div>
 
-          <RevealGroup className="mt-16 grid grid-cols-2 gap-px overflow-hidden md:grid-cols-4">
+          <RevealGroup className="mt-16 grid grid-cols-1 gap-px overflow-hidden sm:grid-cols-3">
             {STATS.map((stat) => (
               <div
                 key={stat.label}
