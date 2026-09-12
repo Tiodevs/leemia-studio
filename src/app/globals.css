@@ -69,6 +69,12 @@ html.lenis body {
   outline-offset: 3px;
 }
 
+/* Shells that only receive focus programmatically (dialogs) should not paint
+   the ring: it belongs to the control the visitor is actually on. */
+[data-focus-shell]:focus-visible {
+  outline: none;
+}
+
 @layer utilities {
   .shell {
     width: 100%;

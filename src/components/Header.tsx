@@ -12,13 +12,13 @@ export function Header() {
   const hideTween = useRef<gsap.core.Tween | null>(null);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { introDone, lockScroll, scrollTo } = useSite();
+  const { introDone, lockScroll, openBrief, scrollTo } = useSite();
 
   useGSAP(
     () => {
       if (prefersReducedMotion()) return;
 
-      gsap.set("[data-menu-panel]", { yPercent: -100 });
+      gsap.set("[data-menu-panel]", { yPercent: -110 });
       gsap.set("[data-menu-link] > span", { yPercent: 110 });
       gsap.set("[data-menu-aside]", { autoAlpha: 0, y: 16 });
 
@@ -114,6 +114,17 @@ export function Header() {
     [scrollTo, toggle],
   );
 
+  const startProject = useCallback(() => {
+    if (open) {
+      toggle(false);
+      // The menu curtain and the dialog share the scroll lock; let the curtain
+      // clear the screen before the form takes over.
+      window.setTimeout(openBrief, 420);
+      return;
+    }
+    openBrief();
+  }, [open, openBrief, toggle]);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape" && open) toggle(false);
@@ -145,14 +156,13 @@ export function Header() {
         </a>
 
         <div className="relative z-10 flex items-center gap-5">
-          <a
-            href={CONTACT.whatsappUrl}
-            target="_blank"
-            rel="noreferrer"
+          <button
+            type="button"
+            onClick={startProject}
             className="hidden text-xs tracking-[0.16em] text-bone uppercase transition-colors hover:text-cyan sm:block"
           >
             Iniciar projeto
-          </a>
+          </button>
 
           <button
             type="button"
@@ -189,7 +199,7 @@ export function Header() {
 
       <div
         data-menu
-        className="pointer-events-none fixed inset-0 z-0"
+        className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
         aria-hidden={!open}
       >
         <div
@@ -199,7 +209,7 @@ export function Header() {
           <nav className="shell flex flex-1 flex-col justify-center py-10">
             <ul>
               {NAV_LINKS.map((link, i) => (
-                <li key={link.href} className="hairline">
+                <li key={link.href}>
                   <a
                     data-menu-link
                     href={link.href}
@@ -222,7 +232,20 @@ export function Header() {
             </ul>
           </nav>
 
-          <div className="shell hairline grid gap-8 py-8 sm:grid-cols-3">
+          <div className="shell pb-2 sm:hidden">
+            <button
+              data-menu-aside
+              type="button"
+              onClick={startProject}
+              tabIndex={open ? 0 : -1}
+              className="group relative w-full overflow-hidden rounded-full bg-cyan px-6 py-3.5 text-xs font-medium tracking-[0.14em] text-ink uppercase"
+            >
+              <span className="relative z-10">Iniciar projeto</span>
+              <span className="absolute inset-0 origin-bottom scale-y-0 bg-bone transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-y-100" />
+            </button>
+          </div>
+
+          <div className="shell grid gap-8 py-8 sm:grid-cols-3">
             <div data-menu-aside className="space-y-2">
               <p className="eyebrow">Contato</p>
               <a

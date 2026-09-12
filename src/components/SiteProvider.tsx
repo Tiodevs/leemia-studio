@@ -19,6 +19,10 @@ type SiteContextValue = {
   finishIntro: () => void;
   lockScroll: (locked: boolean) => void;
   scrollTo: (target: string) => void;
+  /** Single conversion point of the site: the briefing dialog. */
+  briefOpen: boolean;
+  openBrief: () => void;
+  closeBrief: () => void;
 };
 
 const SiteContext = createContext<SiteContextValue | null>(null);
@@ -32,6 +36,7 @@ export function useSite() {
 export function SiteProvider({ children }: { children: ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
   const [introDone, setIntroDone] = useState(false);
+  const [briefOpen, setBriefOpen] = useState(false);
 
   useEffect(() => {
     // Reduced-motion visitors keep native scrolling; the preloader calls
@@ -88,9 +93,35 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     else el.scrollIntoView({ behavior: "smooth" });
   }, []);
 
+  const openBrief = useCallback(() => {
+    setBriefOpen(true);
+    lockScroll(true);
+  }, [lockScroll]);
+
+  const closeBrief = useCallback(() => {
+    setBriefOpen(false);
+    lockScroll(false);
+  }, [lockScroll]);
+
   const value = useMemo(
-    () => ({ introDone, finishIntro, lockScroll, scrollTo }),
-    [introDone, finishIntro, lockScroll, scrollTo],
+    () => ({
+      introDone,
+      finishIntro,
+      lockScroll,
+      scrollTo,
+      briefOpen,
+      openBrief,
+      closeBrief,
+    }),
+    [
+      introDone,
+      finishIntro,
+      lockScroll,
+      scrollTo,
+      briefOpen,
+      openBrief,
+      closeBrief,
+    ],
   );
 
   return <SiteContext.Provider value={value}>{children}</SiteContext.Provider>;

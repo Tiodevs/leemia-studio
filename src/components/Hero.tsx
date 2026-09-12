@@ -6,11 +6,11 @@ import { MeshField } from "@/components/MeshField";
 import { useSite } from "@/components/SiteProvider";
 import { CONTACT } from "@/data/site";
 
-const HEADLINE = ["Design", "Code &"];
+const HEADLINE = ["Sistemas web", "LP &"];
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
-  const { introDone, scrollTo } = useSite();
+  const { introDone, openBrief, scrollTo } = useSite();
 
   useGSAP(
     () => {
@@ -52,7 +52,7 @@ export function Hero() {
     <section
       ref={root}
       id="top"
-      className="relative flex min-h-svh flex-col justify-between gap-10 overflow-hidden pt-[calc(var(--header-h)+1.5rem)] pb-10"
+      className="relative flex flex-col justify-start gap-7 overflow-hidden pt-[calc(var(--header-h)+1.5rem)] pb-10 md:min-h-svh md:justify-between md:gap-10"
     >
       <MeshField
         active={introDone}
@@ -66,11 +66,12 @@ export function Hero() {
           data-anim="hidden"
           className="flex flex-wrap items-center justify-between gap-x-8 gap-y-2 overflow-hidden"
         >
-          <p className="eyebrow">Estúdio de tecnologia · Desde 2026</p>
+          <p className="eyebrow">Software House · Desde 2020</p>
           <p className="eyebrow text-cyan">{CONTACT.location}</p>
         </div>
       </div>
 
+      <div className="relative flex flex-col gap-7 md:contents">
       <div className="shell relative">
         <h1 className="display text-[clamp(2.75rem,min(11.2vw,18svh),9.5rem)]">
           {HEADLINE.map((line) => (
@@ -80,13 +81,13 @@ export function Hero() {
           ))}
           <span data-hero-line data-anim="hidden" className="line-mask">
             <span className="inline-block text-cyan">
-              AI Workflows
+              IA aplicada
             </span>
           </span>
         </h1>
       </div>
 
-      <div className="shell relative grid gap-10 md:grid-cols-12 md:items-end">
+      <div className="shell relative grid gap-6 md:grid-cols-12 md:items-end md:gap-10">
         <p
           data-hero-body
           data-anim="hidden"
@@ -103,18 +104,15 @@ export function Hero() {
           data-hero-cta
           className="flex flex-wrap items-center gap-3 md:col-span-4 md:col-start-7"
         >
-          <a
+          <button
             data-anim="hidden"
-            href="#contato"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollTo("#contato");
-            }}
+            type="button"
+            onClick={openBrief}
             className="group relative overflow-hidden rounded-full bg-cyan px-6 py-3 text-xs font-medium tracking-[0.14em] text-ink uppercase"
           >
             <span className="relative z-10">Começar um projeto</span>
             <span className="absolute inset-0 origin-bottom scale-y-0 bg-bone transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-y-100" />
-          </a>
+          </button>
           <a
             data-anim="hidden"
             href="#projetos"
@@ -142,6 +140,7 @@ export function Hero() {
             <span className="absolute inset-x-0 top-0 h-1/2 animate-[scrollCue_1.8s_ease-in-out_infinite] bg-cyan" />
           </span>
         </button>
+      </div>
       </div>
 
       <style>{`

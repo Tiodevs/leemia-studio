@@ -6,6 +6,7 @@ import { Cursor } from "@/components/Cursor";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Preloader } from "@/components/Preloader";
+import { ProjectBrief } from "@/components/ProjectBrief";
 import { SiteProvider } from "@/components/SiteProvider";
 import { SITE } from "@/data/site";
 
@@ -82,6 +83,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <main>{children}</main>
           <Contact />
           <Footer />
+          <ProjectBrief />
         </SiteProvider>
       </body>
     </html>
