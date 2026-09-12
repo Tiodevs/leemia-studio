@@ -1,4 +1,4 @@
-# Leemia — Design, Code & AI Workflows
+# Leemia — Design, Code & IA aplicada
 
 Site institucional da Leemia, estúdio de tecnologia que cria landing pages, sites
 institucionais, sistemas web completos e automações com inteligência artificial.

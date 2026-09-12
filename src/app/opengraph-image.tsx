@@ -68,7 +68,7 @@ export default function OpengraphImage() {
               color: "#34C3DD",
             }}
           >
-            AI Workflows
+            IA aplicada
           </span>
         </div>
 

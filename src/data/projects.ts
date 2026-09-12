@@ -33,7 +33,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "colecao-copa",
     title: "Coleção Copa",
-    category: "AI Workflow",
+    category: "IA aplicada",
     year: "2026",
     summary:
       "O usuário fotografa a figurinha e a IA identifica a carta pelo código no verso, atualizando faltas e sobras do álbum automaticamente.",
