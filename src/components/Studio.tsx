@@ -79,16 +79,16 @@ export function Studio() {
             </RevealText>
           </div>
 
-          <RevealGroup className="mt-16 grid grid-cols-1 gap-px overflow-hidden sm:grid-cols-3">
+          <RevealGroup className="mt-16 grid grid-cols-2 md:grid-cols-4">
             {STATS.map((stat) => (
               <div
                 key={stat.label}
-                className="hairline pt-5 pr-4"
+                className="border-t border-ink-line py-6 pr-4 even:pl-5 max-md:odd:border-r md:even:pl-0 md:border-r md:pr-6 md:last:border-r-0"
               >
-                <p className="display text-[clamp(1.75rem,3.4vw,2.75rem)] text-cyan">
+                <p className="display text-[clamp(1.65rem,6.4vw,2.75rem)] text-cyan">
                   {stat.value}
                 </p>
-                <p className="mt-2 text-xs leading-snug text-bone-dim">
+                <p className="mt-2 max-w-[11ch] text-xs leading-snug text-bone-dim">
                   {stat.label}
                 </p>
               </div>

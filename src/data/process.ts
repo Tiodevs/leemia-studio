@@ -32,6 +32,7 @@ export const PROCESS: Step[] = [
 ];
 
 export const STATS = [
+  { value: "6", label: "Anos de empresa" },
   { value: "20+", label: "Projetos entregues" },
   { value: "1M+", label: "Pessoas impactadas" },
   { value: "1 sem", label: "Tempo médio de MVP" },
