@@ -17,12 +17,14 @@ export function Work() {
         const frame = card.querySelector("[data-work-frame]");
         const media = card.querySelector("[data-work-media]");
 
-        gsap.from(frame, {
-          clipPath: "inset(0% 0% 100% 0%)",
-          duration: 1.2,
-          ease: EASE.quart,
-          scrollTrigger: { trigger: card, start: "top 82%" },
-        });
+        if (card.dataset.framed !== "true") {
+          gsap.from(frame, {
+            clipPath: "inset(0% 0% 100% 0%)",
+            duration: 1.2,
+            ease: EASE.quart,
+            scrollTrigger: { trigger: card, start: "top 82%" },
+          });
+        }
 
         gsap.from(card.querySelectorAll("[data-work-meta] > *"), {
           y: 24,
@@ -32,6 +34,8 @@ export function Work() {
           ease: EASE.expo,
           scrollTrigger: { trigger: card, start: "top 78%" },
         });
+
+        if (card.dataset.framed === "true") return;
 
         // Slight counter-scroll on the artwork adds depth to the grid. Stays
         // within the image overscale so no edge is ever exposed.
@@ -75,6 +79,7 @@ export function Work() {
           <article
             key={project.slug}
             data-work-card
+            data-framed={project.framed ? "true" : undefined}
             className={`group ${i % 2 === 1 ? "md:mt-24" : ""}`}
           >
             <div
@@ -87,7 +92,8 @@ export function Work() {
                   alt={`Interface do projeto ${project.title}`}
                   fill
                   sizes="(min-width: 768px) 46vw, 92vw"
-                  className="scale-[1.07] object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.13]"
+                  key={project.image}
+                  className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                   priority={i < 2}
                 />
               </div>
@@ -122,6 +128,16 @@ export function Work() {
                   </li>
                 ))}
               </ul>
+
+              <a
+                href={project.href}
+                target="_blank"
+                rel="noreferrer"
+                className="group/btn relative mt-6 inline-flex overflow-hidden rounded-full bg-cyan px-5 py-2.5 text-xs font-medium tracking-[0.14em] text-ink uppercase"
+              >
+                <span className="relative z-10">Abrir projeto</span>
+                <span className="absolute inset-0 origin-bottom scale-y-0 bg-bone transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover/btn:scale-y-100" />
+              </a>
             </div>
           </article>
         ))}

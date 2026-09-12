@@ -6,68 +6,69 @@ export type Project = {
   summary: string;
   stack: string[];
   image: string;
-  href?: string;
+  href: string;
+  /** Show the artwork as a device mockup instead of a full-bleed screenshot. */
+  framed?: boolean;
 };
 
 export const PROJECTS: Project[] = [
   {
     slug: "agendamentos",
-    title: "Sistema de Agendamentos",
+    title: "Gestão de Agendamentos",
     category: "Sistema Web",
     year: "2025",
     summary:
-      "Plataforma de agendamento online em monorepo: API em Node com Express e painel em Next.js. Gestão de horários, profissionais e confirmações automáticas.",
-    stack: ["Next.js", "Node", "Express", "PostgreSQL"],
-    image: "/projects/agendamentos.png",
+      "Sistema completo para barbearia, petshop e negócios de hora marcada: agenda, profissionais, clientes e confirmações num painel só.",
+    stack: ["Next.js", "Node", "PostgreSQL", "Auth"],
+    image: "/projects/agendamentos.jpg",
+    href: "https://agendamento.mefelipe.com.br/login",
   },
   {
-    slug: "gestao-logistica",
-    title: "Gestão Logística",
-    category: "Sistema Web",
-    year: "2025",
-    summary:
-      "Painel de controle de rotas, cargas e entregas com indicadores em tempo real para a operação decidir sem planilha paralela.",
-    stack: ["Next.js", "TypeScript", "Prisma", "Charts"],
-    image: "/projects/logistica.png",
-  },
-  {
-    slug: "colecao-copa",
-    title: "Coleção Copa",
+    slug: "aspas-note",
+    title: "Aspas Note",
     category: "IA aplicada",
-    year: "2026",
-    summary:
-      "O usuário fotografa a figurinha e a IA identifica a carta pelo código no verso, atualizando faltas e sobras do álbum automaticamente.",
-    stack: ["Visão computacional", "Next.js", "Node", "OCR"],
-    image: "/projects/colecao-copa.png",
-  },
-  {
-    slug: "homenagem-virtual",
-    title: "Homenagem Virtual",
-    category: "Produto Digital",
     year: "2025",
     summary:
-      "Memorial digital onde famílias reúnem fotos, textos e mensagens em uma página compartilhável, com upload de mídia e moderação.",
-    stack: ["Next.js", "Node", "Storage", "Stripe"],
-    image: "/projects/homenagem.png",
+      "Anotações viram revisão inteligente. A IA aplica repetição espaçada para as frases certas voltarem na hora em que a memória precisa delas.",
+    stack: ["Next.js", "IA", "Repetição espaçada"],
+    image: "/projects/aspasnote-tablet.jpg",
+    href: "https://aspasnote.mefelipe.com.br",
+    framed: true,
   },
   {
-    slug: "mikis-art",
-    title: "Miki's Art",
+    slug: "portfolio-fotos",
+    title: "Portfólio de Fotos",
     category: "Site Institucional",
     year: "2025",
     summary:
-      "Portfólio para fotógrafa com galeria em grid editorial, carregamento progressivo de imagens e contato direto para orçamento.",
-    stack: ["Next.js", "GSAP", "Cloudinary"],
-    image: "/projects/mikis-art.png",
+      "Site para fotógrafo com álbuns, gestão de imagens e captura de leads — o visitante vê o trabalho e entra em contato no mesmo fluxo.",
+    stack: ["Next.js", "Galeria", "Leads"],
+    image: "/projects/fotos-macbook.jpg",
+    href: "https://fotos.mefelipe.com.br/",
+    framed: true,
   },
   {
-    slug: "qrcode-studio",
-    title: "QRCode Studio",
-    category: "Ferramenta Web",
-    year: "2024",
+    slug: "hub-jogos",
+    title: "Hub de Jogos",
+    category: "Sistema Web",
+    year: "2025",
     summary:
-      "Gerador de QR Codes personalizáveis com cores, logo central e exportação em alta resolução para material impresso.",
-    stack: ["React", "Vite", "Tailwind", "Canvas"],
-    image: "/projects/qrcode.png",
+      "Plataforma full stack de jogos em tempo real: partidas, salas e chat sincronizados por WebSocket, do lobby à partida.",
+    stack: ["Full stack", "WebSocket", "Tempo real"],
+    image: "/projects/jogos-iphone.jpg",
+    href: "https://jogos.mefelipe.com.br/",
+    framed: true,
+  },
+  {
+    slug: "m2-lavagem",
+    title: "M2 Beleza Automotiva",
+    category: "Landing Page",
+    year: "2025",
+    summary:
+      "Landing page para estética automotiva: serviços, processo e conversão direto no WhatsApp, com visual de estúdio.",
+    stack: ["Next.js", "Conversão", "WhatsApp"],
+    image: "/projects/m2-laptop.jpg",
+    href: "https://m2-nine-nu.vercel.app/",
+    framed: true,
   },
 ];
