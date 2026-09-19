@@ -6,8 +6,6 @@ import { MeshField } from "@/components/MeshField";
 import { useSite } from "@/components/SiteProvider";
 import { CONTACT } from "@/data/site";
 
-const HEADLINE = ["Sistemas web", "LP &"];
-
 export function Hero() {
   const root = useRef<HTMLElement>(null);
   const { openBrief, scrollTo } = useSite();
@@ -59,12 +57,11 @@ export function Hero() {
       <div className="relative flex flex-col gap-7 md:contents">
       <div className="shell relative">
         <h1 className="display text-[clamp(3.15rem,min(14.5vw,16svh),9.5rem)]">
-          {HEADLINE.map((line) => (
-            <span key={line} className="block">
-              {line}
-            </span>
-          ))}
-          <span className="block text-cyan">IA aplicada</span>
+          Sistemas web
+          <br />
+          LP &amp;
+          <br />
+          <span className="text-cyan">IA aplicada</span>
         </h1>
       </div>
 
