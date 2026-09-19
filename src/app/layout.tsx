@@ -11,6 +11,10 @@ import { ProjectBrief } from "@/components/ProjectBrief";
 import { SiteProvider } from "@/components/SiteProvider";
 import { SITE } from "@/data/site";
 
+const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
+const clarityId =
+  CLARITY_ID && /^[A-Za-z0-9_-]+$/.test(CLARITY_ID) ? CLARITY_ID : null;
+
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
@@ -76,6 +80,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="pt-BR"
       className={`${spaceGrotesk.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
     >
+      <head>
+        {clarityId ? (
+          <script
+            id="microsoft-clarity"
+            dangerouslySetInnerHTML={{
+              __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "${clarityId}");`,
+            }}
+          />
+        ) : null}
+      </head>
       <body className="bg-ink text-bone">
         <SiteProvider>
           <Preloader />
