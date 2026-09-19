@@ -15,9 +15,6 @@ import { trackOpenBriefing } from "@/lib/analytics";
 import { ScrollTrigger, gsap, prefersReducedMotion } from "@/lib/gsap";
 
 type SiteContextValue = {
-  /** True once the intro curtain has lifted; section timelines wait for it. */
-  introDone: boolean;
-  finishIntro: () => void;
   lockScroll: (locked: boolean) => void;
   scrollTo: (target: string) => void;
   /** Single conversion point of the site: the briefing dialog. */
@@ -36,12 +33,9 @@ export function useSite() {
 
 export function SiteProvider({ children }: { children: ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
-  const [introDone, setIntroDone] = useState(false);
   const [briefOpen, setBriefOpen] = useState(false);
 
   useEffect(() => {
-    // Reduced-motion visitors keep native scrolling; the preloader calls
-    // finishIntro() straight away in that case.
     if (prefersReducedMotion()) return;
 
     const lenis = new Lenis({
@@ -50,12 +44,11 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       touchMultiplier: 1.6,
     });
     lenisRef.current = lenis;
-    lenis.stop();
-
     lenis.on("scroll", ScrollTrigger.update);
 
     const tick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
       gsap.ticker.remove(tick);
@@ -72,19 +65,8 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       else lenis.start();
       return;
     }
-    // Reduced-motion visitors keep native scrolling.
     document.documentElement.style.overflow = locked ? "hidden" : "";
   }, []);
-
-  const finishIntro = useCallback(() => {
-    setIntroDone(true);
-    lockScroll(false);
-    ScrollTrigger.refresh();
-    // Only now: with lag smoothing off, Lenis and ScrollTrigger stay in sync
-    // during heavy scrolling. Enabling it earlier would let a slow first paint
-    // fast-forward the intro timeline.
-    gsap.ticker.lagSmoothing(0);
-  }, [lockScroll]);
 
   const scrollTo = useCallback((target: string) => {
     const el = document.querySelector(target);
@@ -107,23 +89,13 @@ export function SiteProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(
     () => ({
-      introDone,
-      finishIntro,
       lockScroll,
       scrollTo,
       briefOpen,
       openBrief,
       closeBrief,
     }),
-    [
-      introDone,
-      finishIntro,
-      lockScroll,
-      scrollTo,
-      briefOpen,
-      openBrief,
-      closeBrief,
-    ],
+    [lockScroll, scrollTo, briefOpen, openBrief, closeBrief],
   );
 
   return <SiteContext.Provider value={value}>{children}</SiteContext.Provider>;

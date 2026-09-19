@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ScrollTrigger, gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 /** Long horizontal waves, echoing the mesh inside the Leemia mark. */
@@ -16,16 +16,20 @@ const RIBS = [220, 470, 720, 970, 1220];
 
 type MeshFieldProps = {
   className?: string;
-  /** Waits for this flag before drawing, so it lands after the intro curtain. */
-  active?: boolean;
 };
 
-export function MeshField({ className, active = true }: MeshFieldProps) {
+export function MeshField({ className }: MeshFieldProps) {
   const root = useRef<SVGSVGElement>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useGSAP(
     () => {
-      if (!active) return;
+      if (!ready) return;
 
       const lines = gsap.utils.toArray<SVGPathElement>("[data-wave]");
       const ribs = gsap.utils.toArray<SVGPathElement>("[data-rib]");
@@ -68,7 +72,7 @@ export function MeshField({ className, active = true }: MeshFieldProps) {
 
       return () => st.kill();
     },
-    { dependencies: [active], scope: root },
+    { dependencies: [ready], scope: root },
   );
 
   return (

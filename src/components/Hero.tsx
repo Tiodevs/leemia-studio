@@ -10,12 +10,10 @@ const HEADLINE = ["Sistemas web", "LP &"];
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
-  const { introDone, openBrief, scrollTo } = useSite();
+  const { openBrief, scrollTo } = useSite();
 
   useGSAP(
     () => {
-      if (!introDone) return;
-
       const targets = gsap.utils.toArray<HTMLElement>('[data-anim="hidden"]');
       gsap.set(targets, { visibility: "visible" });
 
@@ -23,29 +21,24 @@ export function Hero() {
 
       gsap
         .timeline({ defaults: { ease: EASE.expo } })
-        .from("[data-hero-line] > span", {
-          yPercent: 115,
-          duration: 1.15,
-          stagger: 0.09,
-        })
         .from(
           "[data-hero-top] > *",
           { yPercent: 100, autoAlpha: 0, duration: 0.8, stagger: 0.08 },
-          0.15,
+          0,
         )
         .from(
           "[data-hero-body]",
           { y: 24, autoAlpha: 0, duration: 0.9 },
-          0.55,
+          0.2,
         )
         .from(
           "[data-hero-cta] > *",
           { y: 20, autoAlpha: 0, duration: 0.8, stagger: 0.1 },
-          0.7,
+          0.35,
         )
-        .from("[data-hero-scroll]", { autoAlpha: 0, duration: 0.8 }, 0.9);
+        .from("[data-hero-scroll]", { autoAlpha: 0, duration: 0.8 }, 0.5);
     },
-    { dependencies: [introDone], scope: root },
+    { scope: root },
   );
 
   return (
@@ -54,10 +47,7 @@ export function Hero() {
       id="top"
       className="relative flex flex-col justify-start gap-7 overflow-hidden pt-[calc(var(--header-h)+1.5rem)] pb-10 md:min-h-svh md:justify-between md:gap-10"
     >
-      <MeshField
-        active={introDone}
-        className="pointer-events-none absolute inset-x-0 top-0 h-[130%] w-full opacity-[0.22]"
-      />
+      <MeshField className="pointer-events-none absolute inset-x-0 top-0 h-[130%] w-full opacity-[0.22]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_-10%,transparent_35%,var(--color-ink)_100%)]" />
 
       <div className="shell relative">
@@ -75,15 +65,11 @@ export function Hero() {
       <div className="shell relative">
         <h1 className="display text-[clamp(2.75rem,min(11.2vw,18svh),9.5rem)]">
           {HEADLINE.map((line) => (
-            <span key={line} data-hero-line data-anim="hidden" className="line-mask">
-              <span className="inline-block">{line}</span>
+            <span key={line} className="block">
+              {line}
             </span>
           ))}
-          <span data-hero-line data-anim="hidden" className="line-mask">
-            <span className="inline-block text-cyan">
-              IA aplicada
-            </span>
-          </span>
+          <span className="block text-cyan">IA aplicada</span>
         </h1>
       </div>
 

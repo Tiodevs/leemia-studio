@@ -1,15 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Serif, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import dynamic from "next/dynamic";
+import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@/components/Analytics";
 import { Contact } from "@/components/Contact";
-import { Cursor } from "@/components/Cursor";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { Preloader } from "@/components/Preloader";
-import { ProjectBrief } from "@/components/ProjectBrief";
 import { SiteProvider } from "@/components/SiteProvider";
 import { SITE } from "@/data/site";
+
+const Cursor = dynamic(
+  () => import("@/components/Cursor").then((mod) => mod.Cursor),
+  { ssr: false },
+);
+
+const ProjectBrief = dynamic(
+  () => import("@/components/ProjectBrief").then((mod) => mod.ProjectBrief),
+  { ssr: false },
+);
 
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
 const clarityId =
@@ -18,14 +26,6 @@ const clarityId =
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -78,7 +78,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${spaceGrotesk.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
       <head>
         {clarityId ? (
@@ -92,7 +92,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="bg-ink text-bone">
         <SiteProvider>
-          <Preloader />
           <Cursor />
           <Header />
           <main>{children}</main>

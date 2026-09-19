@@ -94,7 +94,6 @@ export function Work() {
                   sizes="(min-width: 768px) 46vw, 92vw"
                   key={project.image}
                   className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
-                  priority={i < 2}
                 />
               </div>
               <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-ink-line transition-colors duration-500 group-hover:ring-cyan/50" />

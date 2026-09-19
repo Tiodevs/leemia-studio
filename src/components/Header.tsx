@@ -12,7 +12,7 @@ export function Header() {
   const hideTween = useRef<gsap.core.Tween | null>(null);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { introDone, lockScroll, openBrief, scrollTo } = useSite();
+  const { lockScroll, openBrief, scrollTo } = useSite();
 
   useGSAP(
     () => {
@@ -44,29 +44,14 @@ export function Header() {
     { scope: root },
   );
 
-  // Header reveals after the intro curtain, then hides on scroll-down.
+  // Hide the bar on scroll-down. Animate the inner bar, never the <header>
+  // itself: a transform on the header would become the containing block for
+  // the fixed menu overlay inside it.
   useGSAP(
     () => {
-      if (!introDone) return;
-
       const inner = root.current?.querySelector("[data-header-inner]");
-      if (!inner) return;
+      if (!inner || prefersReducedMotion()) return;
 
-      if (prefersReducedMotion()) {
-        gsap.set(inner, { visibility: "visible" });
-        return;
-      }
-
-      gsap.set(inner, { visibility: "visible", yPercent: -100, autoAlpha: 0 });
-      gsap.to(inner, {
-        yPercent: 0,
-        autoAlpha: 1,
-        duration: 0.9,
-        ease: EASE.expo,
-      });
-
-      // Animate the bar, never the <header> itself: a transform on the header
-      // would become the containing block for the fixed menu overlay inside it.
       const hide = gsap.to(inner, {
         yPercent: -110,
         duration: 0.5,
@@ -88,7 +73,7 @@ export function Header() {
 
       return () => st.kill();
     },
-    { dependencies: [introDone], scope: root },
+    { scope: root },
   );
 
   const toggle = useCallback(
@@ -137,7 +122,6 @@ export function Header() {
     <header ref={root} className="fixed inset-x-0 top-0 z-50">
       <div
         data-header-inner
-        data-anim="hidden"
         className={`relative z-10 transition-colors duration-500 ${
           scrolled && !open ? "bg-ink/70 backdrop-blur-lg" : "bg-transparent"
         }`}
