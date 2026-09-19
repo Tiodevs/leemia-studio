@@ -72,6 +72,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
       <head>
+        <style
+          dangerouslySetInnerHTML={{
+            __html:
+              "[data-menu]:not(.is-open){visibility:hidden}[data-anim=hidden]{visibility:hidden}",
+          }}
+        />
         {clarityId ? (
           <script
             id="microsoft-clarity"
