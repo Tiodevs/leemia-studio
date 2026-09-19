@@ -40,7 +40,7 @@ export function Hero() {
     <section
       ref={root}
       id="top"
-      className="relative flex flex-col justify-start gap-7 overflow-hidden pt-[calc(var(--header-h)+1.5rem)] pb-10 md:min-h-svh md:justify-between md:gap-10"
+      className="relative flex min-h-svh flex-col justify-between gap-7 overflow-hidden pt-[calc(var(--header-h)+1.5rem)] pb-10 md:gap-10"
     >
       <MeshField className="pointer-events-none absolute inset-x-0 top-0 h-[130%] w-full opacity-[0.22]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_-10%,transparent_35%,var(--color-ink)_100%)]" />

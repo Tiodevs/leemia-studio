@@ -22,24 +22,39 @@ export function Marquee() {
       const track = root.current?.querySelector("[data-marquee-track]");
       if (!track) return;
 
-      const loop = gsap.to(track, {
-        xPercent: -50,
-        duration: 26,
-        repeat: -1,
-        ease: "none",
-      });
+      let loop: gsap.core.Tween | null = null;
+      const startLoop = () => {
+        if (loop) return;
+        loop = gsap.to(track, {
+          xPercent: -50,
+          duration: 26,
+          repeat: -1,
+          ease: "none",
+        });
+      };
+
+      const onInteract = () => startLoop();
+      window.addEventListener("pointerdown", onInteract, { once: true });
+      const loopTimeout = window.setTimeout(startLoop, 12000);
 
       // Scroll direction flips the marquee, and scrolling speeds it up.
       const st = ScrollTrigger.create({
         start: 0,
         end: "max",
         onUpdate: (self) => {
+          if (self.getVelocity() !== 0) startLoop();
+          if (!loop) return;
           const velocity = Math.min(Math.abs(self.getVelocity()) / 400, 4);
           loop.timeScale(self.direction * (1 + velocity));
         },
       });
 
-      return () => st.kill();
+      return () => {
+        window.removeEventListener("pointerdown", onInteract);
+        window.clearTimeout(loopTimeout);
+        st.kill();
+        loop?.kill();
+      };
     },
     { scope: root },
   );

@@ -51,16 +51,24 @@ export function MeshField({ className }: MeshFieldProps) {
         },
       );
 
-      // Slow drift keeps the field alive without demanding attention.
-      lines.forEach((line, i) => {
-        gsap.to(line, {
-          yPercent: i % 2 === 0 ? 1.6 : -1.6,
-          duration: 7 + i,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
+      let drifted = false;
+      const startDrift = () => {
+        if (drifted) return;
+        drifted = true;
+        lines.forEach((line, i) => {
+          gsap.to(line, {
+            yPercent: i % 2 === 0 ? 1.6 : -1.6,
+            duration: 7 + i,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+          });
         });
-      });
+      };
+
+      const onInteract = () => startDrift();
+      window.addEventListener("pointerdown", onInteract, { once: true });
+      const driftTimeout = window.setTimeout(startDrift, 12000);
 
       const st = ScrollTrigger.create({
         trigger: root.current,
@@ -70,7 +78,11 @@ export function MeshField({ className }: MeshFieldProps) {
         animation: gsap.to(root.current, { yPercent: 12, ease: "none" }),
       });
 
-      return () => st.kill();
+      return () => {
+        window.removeEventListener("pointerdown", onInteract);
+        window.clearTimeout(driftTimeout);
+        st.kill();
+      };
     },
     { dependencies: [ready], scope: root },
   );
