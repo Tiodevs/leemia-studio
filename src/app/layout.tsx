@@ -16,7 +16,8 @@ const clarityId =
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
-  display: "swap",
+  display: "optional",
+  adjustFontFallback: true,
 });
 
 const jetbrainsMono = JetBrains_Mono({
