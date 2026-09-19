@@ -83,9 +83,19 @@ export function Header() {
       // The bar may be tucked away by the scroll-direction tween; bring it back.
       if (next) hideTween.current?.reverse();
       const tl = menuTl.current;
+      const menu = root.current?.querySelector("[data-menu]");
       if (!tl) return;
-      if (next) tl.timeScale(1).play();
-      else tl.timeScale(1.6).reverse();
+      if (next) {
+        menu?.classList.add("is-open");
+        tl.timeScale(1).play();
+        return;
+      }
+      tl.eventCallback("onReverseComplete", () => {
+        if (root.current?.querySelector("[aria-expanded='true']")) return;
+        menu?.classList.remove("is-open");
+        tl.eventCallback("onReverseComplete", null);
+      });
+      tl.timeScale(1.6).reverse();
     },
     [lockScroll],
   );
