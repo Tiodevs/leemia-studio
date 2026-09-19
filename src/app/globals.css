@@ -116,6 +116,16 @@ html.lenis body {
   }
 }
 
+/* The fullscreen menu is in the DOM on first paint. Keep it off-screen until
+   the visitor opens it, otherwise Lighthouse records it as the first view. */
+[data-menu][aria-hidden="true"] {
+  visibility: hidden;
+}
+
+[data-menu-panel] {
+  transform: translateY(-110%);
+}
+
 /* Below-the-fold entry animations stay hidden until GSAP takes over. The hero
    H1 must never use this: it is the LCP element. */
 [data-anim="hidden"] {
