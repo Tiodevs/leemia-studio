@@ -1,23 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import dynamic from "next/dynamic";
 import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@/components/Analytics";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { LazyChrome } from "@/components/LazyChrome";
 import { SiteProvider } from "@/components/SiteProvider";
 import { SITE } from "@/data/site";
-
-const Cursor = dynamic(
-  () => import("@/components/Cursor").then((mod) => mod.Cursor),
-  { ssr: false },
-);
-
-const ProjectBrief = dynamic(
-  () => import("@/components/ProjectBrief").then((mod) => mod.ProjectBrief),
-  { ssr: false },
-);
 
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
 const clarityId =
@@ -92,12 +82,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="bg-ink text-bone">
         <SiteProvider>
-          <Cursor />
+          <LazyChrome />
           <Header />
           <main>{children}</main>
           <Contact />
           <Footer />
-          <ProjectBrief />
         </SiteProvider>
         <Analytics />
       </body>
