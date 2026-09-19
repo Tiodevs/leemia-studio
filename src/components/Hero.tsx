@@ -27,16 +27,11 @@ export function Hero() {
           0,
         )
         .from(
-          "[data-hero-body]",
-          { y: 24, autoAlpha: 0, duration: 0.9 },
-          0.2,
-        )
-        .from(
           "[data-hero-cta] > *",
           { y: 20, autoAlpha: 0, duration: 0.8, stagger: 0.1 },
-          0.35,
+          0.2,
         )
-        .from("[data-hero-scroll]", { autoAlpha: 0, duration: 0.8 }, 0.5);
+        .from("[data-hero-scroll]", { autoAlpha: 0, duration: 0.8 }, 0.35);
     },
     { scope: root },
   );
@@ -74,11 +69,7 @@ export function Hero() {
       </div>
 
       <div className="shell relative grid gap-6 md:grid-cols-12 md:items-end md:gap-10">
-        <p
-          data-hero-body
-          data-anim="hidden"
-          className="text-base leading-relaxed text-bone-dim md:col-span-5 md:col-start-1 md:text-lg"
-        >
+        <p className="text-base leading-relaxed text-bone-dim md:col-span-5 md:col-start-1 md:text-lg">
           A Leemia desenha, programa e automatiza produtos digitais.{" "}
           <span className="text-bone">
             Landing pages, sites institucionais, sistemas web completos
