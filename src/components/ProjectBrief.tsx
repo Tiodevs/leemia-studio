@@ -9,6 +9,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import { submitBriefing } from "@/app/actions/briefing";
+import { trackGenerateLead } from "@/lib/analytics";
 import { EASE, gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useSite } from "@/components/SiteProvider";
 import { SERVICES } from "@/data/services";
@@ -96,6 +97,12 @@ export function ProjectBrief() {
     lastHeight.current = panel.current?.offsetHeight ?? 0;
     setSending(false);
     setSent(true);
+    trackGenerateLead({
+      servicesCount: form.services.length,
+      start: form.start,
+      budget: form.budget,
+      team: form.team,
+    });
   };
 
   useEffect(() => {

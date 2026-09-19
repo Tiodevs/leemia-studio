@@ -24,5 +24,5 @@ export const SITE = {
   tagline: "Design, Code & IA aplicada",
   description:
     "Estúdio de tecnologia que cria landing pages, sites institucionais, sistemas web completos e automações com inteligência artificial.",
-  url: "https://leemia.com.br",
+  url: "https://leemia-studio.vercel.app",
 } as const;

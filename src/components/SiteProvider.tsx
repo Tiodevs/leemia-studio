@@ -11,6 +11,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { trackOpenBriefing } from "@/lib/analytics";
 import { ScrollTrigger, gsap, prefersReducedMotion } from "@/lib/gsap";
 
 type SiteContextValue = {
@@ -96,6 +97,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   const openBrief = useCallback(() => {
     setBriefOpen(true);
     lockScroll(true);
+    trackOpenBriefing();
   }, [lockScroll]);
 
   const closeBrief = useCallback(() => {

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@/components/Analytics";
 import { Contact } from "@/components/Contact";
 import { Cursor } from "@/components/Cursor";
 import { Footer } from "@/components/Footer";
@@ -85,6 +86,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Footer />
           <ProjectBrief />
         </SiteProvider>
+        <Analytics />
       </body>
     </html>
   );
