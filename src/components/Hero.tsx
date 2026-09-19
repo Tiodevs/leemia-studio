@@ -58,7 +58,7 @@ export function Hero() {
 
       <div className="relative flex flex-col gap-7 md:contents">
       <div className="shell relative">
-        <h1 className="display text-[clamp(2.75rem,min(11.2vw,18svh),9.5rem)]">
+        <h1 className="display text-[clamp(3.15rem,min(14.5vw,16svh),9.5rem)]">
           {HEADLINE.map((line) => (
             <span key={line} className="block">
               {line}
