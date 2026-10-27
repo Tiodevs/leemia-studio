@@ -38,18 +38,9 @@ export function trackOpenBriefing() {
   trackEvent("open_briefing", { method: "cta" });
 }
 
-export function trackGenerateLead(params: {
-  servicesCount: number;
-  start: string;
-  budget: string;
-  team: string;
-}) {
+export function trackGenerateLead() {
   trackEvent("generate_lead", {
     currency: "BRL",
-    lead_source: "website_briefing",
-    services_count: params.servicesCount,
-    start: params.start || "n/a",
-    budget: params.budget || "n/a",
-    team: params.team || "n/a",
+    lead_source: "website_contact",
   });
 }

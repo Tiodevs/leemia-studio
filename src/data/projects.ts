@@ -20,8 +20,8 @@ export const PROJECTS: Project[] = [
     summary:
       "Sistema completo para barbearia, petshop e negócios de hora marcada: agenda, profissionais, clientes e confirmações num painel só.",
     stack: ["Next.js", "Node", "PostgreSQL", "Auth"],
-    image: "/projects/agendamentos.jpg",
-    href: "https://agendamento.mefelipe.com.br/login",
+    image: "/projects/agendamentos/hero.jpg",
+    href: "https://agendamento.mefelipe.com.br",
   },
   {
     slug: "aspas-note",

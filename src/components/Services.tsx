@@ -3,11 +3,14 @@
 import { useRef, useState } from "react";
 import { EASE, gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { RevealText } from "@/components/Reveal";
-import { SERVICES } from "@/data/services";
+import { useSite } from "@/components/SiteProvider";
 
 export function Services() {
   const root = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
+  const { dictionary } = useSite();
+  const t = dictionary.services;
+  const services = t.items;
 
   useGSAP(
     () => {
@@ -63,17 +66,17 @@ export function Services() {
       className="shell relative scroll-mt-24 py-24 md:py-36"
     >
       <div className="grid gap-6 md:grid-cols-12 md:items-end">
-        <p className="eyebrow md:col-span-4">Serviços</p>
+        <p className="eyebrow md:col-span-4">{t.eyebrow}</p>
         <RevealText
           as="h2"
           className="display display-lines text-[clamp(2rem,5.4vw,4.5rem)] md:col-span-8"
         >
-          4 serviços para atender a dor da sua empresa
+          {t.title}
         </RevealText>
       </div>
 
       <div data-service-list className="mt-14 md:mt-20">
-        {SERVICES.map((service, i) => {
+        {services.map((service, i) => {
           const isActive = i === active;
 
           return (

@@ -1,14 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #05070a;
-  --color-ink-soft: #0a0e13;
-  --color-ink-line: #171d24;
-  --color-bone: #f2f5f6;
-  --color-bone-dim: #9aa7ae;
-  --color-cyan: #34c3dd;
-  --color-cyan-light: #67d2e5;
-  --color-cyan-wash: #e5f7fb;
+  /* Light surfaces */
+  --color-ink: #f2f5f6;
+  --color-ink-soft: #e7ecee;
+  --color-ink-line: #c9d3d8;
+  /* Primary text */
+  --color-bone: #0b1216;
+  --color-bone-dim: #5a6b73;
+  /* Brand */
+  --color-cyan: #0f9bb8;
+  --color-cyan-light: #34c3dd;
+  --color-cyan-wash: #d8f1f7;
+  /* Always-dark ink for text on cyan CTAs */
+  --color-ink-deep: #05070a;
+  /* Light fill used on cyan button hover */
+  --color-paper: #ffffff;
 
   --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-serif: ui-serif, Georgia, serif;
@@ -21,6 +28,26 @@
 :root {
   --gutter: 1.25rem;
   --header-h: 4.5rem;
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --color-ink: #05070a;
+  --color-ink-soft: #0a0e13;
+  --color-ink-line: #171d24;
+  --color-bone: #f2f5f6;
+  --color-bone-dim: #9aa7ae;
+  --color-cyan: #34c3dd;
+  --color-cyan-light: #67d2e5;
+  --color-cyan-wash: #e5f7fb;
+  --color-ink-deep: #05070a;
+  --color-paper: #f2f5f6;
+}
+
+html[data-theme="dark"] [data-theme-icon="sun"],
+html:not([data-theme="dark"]) [data-theme-icon="moon"] {
+  display: none;
 }
 
 @media (min-width: 768px) {
@@ -43,6 +70,8 @@ html {
 body {
   font-family: var(--font-sans);
   overflow-x: hidden;
+  /* Compensates the scrollbar removed while the menu / briefing lock scroll. */
+  padding-right: var(--scroll-lock-gutter, 0px);
 }
 
 /* Lenis drives scrolling; native smooth-scroll must stay off. */
@@ -59,9 +88,15 @@ html.lenis body {
   overflow: hidden;
 }
 
+/* Fixed overlays must match the body gutter or they jump when the scrollbar vanishes. */
+header.fixed,
+[data-menu] {
+  padding-right: var(--scroll-lock-gutter, 0px);
+}
+
 ::selection {
   background-color: var(--color-cyan);
-  color: var(--color-ink);
+  color: var(--color-paper);
 }
 
 :focus-visible {
@@ -122,8 +157,7 @@ html.lenis body {
   visibility: hidden;
 }
 
-/* Below-the-fold entry animations stay hidden until GSAP takes over. The hero
-   H1 must never use this: it is the LCP element. */
+/* Entry animations stay hidden until GSAP takes over. */
 [data-anim="hidden"] {
   visibility: hidden;
 }

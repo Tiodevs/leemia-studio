@@ -1,11 +1,3 @@
-export const NAV_LINKS = [
-  { label: "Sobre", href: "#estudio" },
-  { label: "Serviços", href: "#servicos" },
-  { label: "Projetos", href: "#projetos" },
-  { label: "Processo", href: "#processo" },
-  { label: "Contato", href: "#contato" },
-] as const;
-
 export const CONTACT = {
   email: "santospefelipe@gmail.com",
   phoneLabel: "+55 (41) 98420-8843",

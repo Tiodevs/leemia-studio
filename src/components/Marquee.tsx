@@ -2,18 +2,12 @@
 
 import { useRef } from "react";
 import { ScrollTrigger, gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
-
-const ITEMS = [
-  "Sistemas Web",
-  "IA aplicada",
-  "Landing Pages",
-  "Sites Institucionais",
-  "Automação",
-  "Design de Interface",
-];
+import { useSite } from "@/components/SiteProvider";
 
 export function Marquee() {
   const root = useRef<HTMLDivElement>(null);
+  const { dictionary } = useSite();
+  const items = dictionary.marquee;
 
   useGSAP(
     () => {
@@ -37,7 +31,6 @@ export function Marquee() {
       window.addEventListener("pointerdown", onInteract, { once: true });
       const loopTimeout = window.setTimeout(startLoop, 12000);
 
-      // Scroll direction flips the marquee, and scrolling speeds it up.
       const st = ScrollTrigger.create({
         start: 0,
         end: "max",
@@ -56,7 +49,7 @@ export function Marquee() {
         loop?.kill();
       };
     },
-    { scope: root },
+    { scope: root, dependencies: [items.join("|")] },
   );
 
   return (
@@ -68,7 +61,7 @@ export function Marquee() {
       <div data-marquee-track className="flex w-max will-change-transform">
         {[0, 1].map((copy) => (
           <div key={copy} className="flex shrink-0">
-            {ITEMS.map((item) => (
+            {items.map((item) => (
               <span
                 key={`${copy}-${item}`}
                 className="flex items-center gap-8 px-8 text-sm tracking-[0.14em] whitespace-nowrap text-bone-dim uppercase"

@@ -3,10 +3,12 @@
 import { useRef } from "react";
 import { EASE, gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { RevealText } from "@/components/Reveal";
-import { PROCESS } from "@/data/process";
+import { useSite } from "@/components/SiteProvider";
 
 export function Process() {
   const root = useRef<HTMLElement>(null);
+  const { dictionary } = useSite();
+  const t = dictionary.process;
 
   useGSAP(
     () => {
@@ -57,12 +59,12 @@ export function Process() {
     >
       <div className="shell">
         <div className="grid gap-6 md:grid-cols-12 md:items-end">
-          <p className="eyebrow md:col-span-4">Processo</p>
+          <p className="eyebrow md:col-span-4">{t.eyebrow}</p>
           <RevealText
             as="h2"
             className="display display-lines text-[clamp(2rem,5.4vw,4.5rem)] md:col-span-8"
           >
-            Do briefing ao deploy, sem caixa-preta.
+            {t.title}
           </RevealText>
         </div>
 
@@ -75,7 +77,7 @@ export function Process() {
           </div>
 
           <ol>
-            {PROCESS.map((step) => (
+            {t.steps.map((step) => (
               <li
                 key={step.index}
                 data-step

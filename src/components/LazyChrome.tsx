@@ -7,16 +7,6 @@ const Cursor = dynamic(
   { ssr: false },
 );
 
-const ProjectBrief = dynamic(
-  () => import("@/components/ProjectBrief").then((mod) => mod.ProjectBrief),
-  { ssr: false },
-);
-
 export function LazyChrome() {
-  return (
-    <>
-      <Cursor />
-      <ProjectBrief />
-    </>
-  );
+  return <Cursor />;
 }

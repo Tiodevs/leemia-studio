@@ -16,8 +16,8 @@ export default function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#05070A",
-          color: "#F2F5F6",
+          background: "#F2F5F6",
+          color: "#0B1216",
           padding: "72px",
           fontFamily: "sans-serif",
         }}
@@ -28,7 +28,7 @@ export default function OpengraphImage() {
               <path
                 key={d}
                 d={d}
-                stroke="#34C3DD"
+                stroke="#0F9BB8"
                 strokeWidth={7}
                 strokeLinecap="round"
               />
@@ -39,7 +39,7 @@ export default function OpengraphImage() {
               width="112"
               height="92"
               rx="4"
-              stroke="#34C3DD"
+              stroke="#0F9BB8"
               strokeWidth={7}
             />
           </svg>
@@ -65,14 +65,14 @@ export default function OpengraphImage() {
               lineHeight: 1,
               letterSpacing: "-0.04em",
               textTransform: "uppercase",
-              color: "#34C3DD",
+              color: "#0F9BB8",
             }}
           >
             IA aplicada
           </span>
         </div>
 
-        <span style={{ fontSize: 26, color: "#9AA7AE", maxWidth: 900 }}>
+        <span style={{ fontSize: 26, color: "#5A6B73", maxWidth: 900 }}>
           Landing pages, sites institucionais, sistemas web completos e
           automações com inteligência artificial.
         </span>

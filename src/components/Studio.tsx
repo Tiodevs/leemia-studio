@@ -4,10 +4,12 @@ import { useRef } from "react";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { LogoMark } from "@/components/LogoMark";
 import { RevealGroup, RevealText } from "@/components/Reveal";
-import { STATS } from "@/data/process";
+import { useSite } from "@/components/SiteProvider";
 
 export function Studio() {
   const root = useRef<HTMLElement>(null);
+  const { dictionary } = useSite();
+  const t = dictionary.studio;
 
   useGSAP(
     () => {
@@ -47,7 +49,7 @@ export function Studio() {
     >
       <div className="grid gap-14 md:grid-cols-12">
         <div className="md:col-span-4">
-          <p className="eyebrow">A nossa empresa</p>
+          <p className="eyebrow">{t.eyebrow}</p>
           <div
             data-studio-mark
             className="mt-10 hidden w-40 text-cyan md:block"
@@ -61,26 +63,16 @@ export function Studio() {
             as="h2"
             className="display display-lines text-[clamp(1.9rem,4.6vw,4rem)] text-balance"
           >
-            Uma software house que constrói produto de ponta a ponta.
+            {t.title}
           </RevealText>
 
           <div className="mt-10 grid gap-8 text-base leading-relaxed text-bone-dim md:grid-cols-2 md:text-[1.0625rem]">
-            <RevealText>
-              A Leemia nasceu da união entre design, engenharia e inteligência
-              artificial. Em vez de repassar seu projeto por uma corrente de
-              pessoas, você fala direto com quem desenha a interface, escreve o
-              código e sobe tudo em produção.
-            </RevealText>
-            <RevealText delay={0.1}>
-              Isso significa menos ruído, decisões mais rápidas e um produto
-              coerente do primeiro pixel ao último deploy. Cada entrega é
-              medida por performance, clareza e o impacto real no negócio de
-              quem contratou.
-            </RevealText>
+            <RevealText>{t.p1}</RevealText>
+            <RevealText delay={0.1}>{t.p2}</RevealText>
           </div>
 
           <RevealGroup className="mt-16 grid grid-cols-2 md:grid-cols-4">
-            {STATS.map((stat) => (
+            {t.stats.map((stat) => (
               <div
                 key={stat.label}
                 className="border-t border-ink-line py-6 pr-4 even:pl-5 max-md:odd:border-r md:even:pl-0 md:pr-8"
